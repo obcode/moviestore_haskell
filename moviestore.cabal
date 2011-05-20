@@ -1,0 +1,16 @@
+Name:                moviestore
+Version:             0.1
+Synopsis:            Simple MovieStore-Management Software
+License:             BSD3
+License-file:        LICENSE
+Author:              Oliver Braun
+Maintainer:          ob@obraun.net
+Category:            Misc
+Build-type:          Simple
+Cabal-version:       >=1.2
+
+Executable moviestore
+  hs-source-dirs:    src
+  Main-is:           MovieStoreCLI.hs
+  Build-depends:     base >= 4.2 && < 5,
+                     containers
