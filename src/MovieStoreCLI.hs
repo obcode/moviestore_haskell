@@ -23,25 +23,23 @@ module Main ( main
 import qualified Movies as M
 import System.IO(hSetBuffering, stdin, stdout, BufferMode(NoBuffering))
 
-type Movies = M.Movies
-
 -- | The 'readMovies' function can be used to read a file containing
 -- movies.
 readMovies :: FilePath   -- ^ The name of the file
-           -> IO Movies  -- ^ The contents as value of type 'Movies'
+           -> IO M.Movies  -- ^ The contents as value of type 'M.Movies'
 readMovies = fmap read . readFile
 
 -- | The 'saveMovies' function can be used to write the movies to a file.
 saveMovies :: FilePath  -- ^ The name of the file
-           -> Movies    -- ^ The movies
+           -> M.Movies    -- ^ The movies
            -> IO ()
 saveMovies fp = writeFile fp . show
 
 -- | The 'rentMovie' function can be used to rent a movie.
 -- It returns a successflag and the new movies. The function asks for a
 -- title and tries to rent a copy.
-rentMovie :: Movies            -- ^ The movies
-          -> IO (Bool,Movies)  -- ^ An indicator whether a copy was rent and the new movies.
+rentMovie :: M.Movies            -- ^ The movies
+          -> IO (Bool,M.Movies)  -- ^ An indicator whether a copy was rent and the new movies.
 rentMovie vl = do
   putStr "Title? "
   title <- getLine
@@ -54,8 +52,8 @@ rentMovie vl = do
 -- | The 'returnMovie' function can be used to return a movie.
 -- It returns the new movies. The function asks for a
 -- title and tries to put a copy it back.
-returnMovie :: Movies     -- ^ All movies
-            -> IO Movies  -- ^ The new movies
+returnMovie :: M.Movies     -- ^ All movies
+            -> IO M.Movies  -- ^ The new movies
 returnMovie vl = do
   putStr "Title? "
   title <- getLine
@@ -89,8 +87,8 @@ main = do
 --
 -- Use for example:
 --
--- > mainloop $ Movies.fromList ["Am Limit", "Matrix", "Matrix"]
-mainloop :: Movies  -- ^ The initial movies
+-- > mainloop $ M.Movies.fromList ["Am Limit", "Matrix", "Matrix"]
+mainloop :: M.Movies  -- ^ The initial movies
          -> IO ()
 mainloop vl = do
     menu
