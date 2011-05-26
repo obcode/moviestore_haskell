@@ -1,6 +1,6 @@
 Name:                moviestore
 Version:             0.1
-Synopsis:            Simple MovieStore-Management Software
+Synopsis:            Simple MovieStore Management System
 License:             BSD3
 License-file:        LICENSE
 Author:              Oliver Braun
@@ -8,9 +8,15 @@ Maintainer:          ob@obraun.net
 Category:            Misc
 Build-type:          Simple
 Cabal-version:       >=1.2
+Description: This simple MovieStore Management System uses a Map for
+        storing movie titles and the number of available and rent copies.
+        It provides a simply command line interface. Within the
+        application it is possible to save the movies to a file and read
+        them from a file.
 
 Executable moviestore
   hs-source-dirs:    src
   Main-is:           MovieStoreCLI.hs
   Build-depends:     base >= 4.2 && < 5,
                      containers
+

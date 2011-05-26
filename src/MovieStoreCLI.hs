@@ -1,18 +1,48 @@
-module Main where
+--------------------------------------------------------------------
+-- |
+-- Module    : Main
+-- Copyright : (c) Oliver Braun
+-- License   : BSD3
+--
+-- Maintainer: Oliver Braun <ob@obraun.net>
+-- Stability : provisional
+-- Portability: portable
+--
+-- This module provides a CLI for a MovieStore using the "Movies" module.
+--
+--------------------------------------------------------------------
+
+module Main ( main
+            , readMovies
+            , saveMovies
+            , rentMovie
+            , returnMovie
+            , mainloop
+            )where
 
 import qualified Movies as M
 import System.IO(hSetBuffering, stdin, stdout, BufferMode(NoBuffering))
 
 type Movies = M.Movies
 
-readMovies :: FilePath -> IO Movies
+-- | The 'readMovies' function can be used to read a file containing
+-- movies.
+readMovies :: FilePath   -- ^ The name of the file
+           -> IO Movies  -- ^ The contents as value of type 'Movies'
 readMovies = fmap read . readFile
 
-saveMovies :: FilePath -> Movies -> IO ()
+-- | The 'saveMovies' function can be used to write the movies to a file.
+saveMovies :: FilePath  -- ^ The name of the file
+           -> Movies    -- ^ The movies
+           -> IO ()
 saveMovies fp = writeFile fp . show
 
-rentVideo :: Movies -> IO (Bool,Movies)
-rentVideo vl = do
+-- | The 'rentMovie' function can be used to rent a movie.
+-- It returns a successflag and the new movies. The function asks for a
+-- title and tries to rent a copy.
+rentMovie :: Movies            -- ^ The movies
+          -> IO (Bool,Movies)  -- ^ An indicator whether a copy was rent and the new movies.
+rentMovie vl = do
   putStr "Title? "
   title <- getLine
   if M.rentable title vl
@@ -21,8 +51,12 @@ rentVideo vl = do
     putStrLn $ "Sorry! " ++ title ++ " is currently not rentable"
     return (False,vl)
 
-returnVideo :: Movies -> IO Movies
-returnVideo vl = do
+-- | The 'returnMovie' function can be used to return a movie.
+-- It returns the new movies. The function asks for a
+-- title and tries to put a copy it back.
+returnMovie :: Movies     -- ^ All movies
+            -> IO Movies  -- ^ The new movies
+returnMovie vl = do
   putStr "Title? "
   title <- getLine
   let (vl',ok) = M.return title vl
@@ -32,20 +66,39 @@ returnVideo vl = do
         putStrLn $ title ++ " is not ours!"
         return vl
 
+-- | The 'main' function calls 'mainloop' with no movies.
 main :: IO ()
 main = do
   hSetBuffering stdin NoBuffering
   hSetBuffering stdout NoBuffering
   mainloop $ M.fromList []
 
-mainloop :: Movies -> IO ()
+-- | The 'mainloop' function shows the following menu:
+--
+-- > *********************************************
+-- > * Press q(uit) or one of the following keys *
+-- > * g - get a movie                           *
+-- > * r - return a movie                        *
+-- > * l - load Movies from a file               *
+-- > * s - save Movies to a file                 *
+-- > * p - print state of video store            *
+-- > *********************************************
+-- > Input:
+--
+-- After a keypress the corresponding action will be performed.
+--
+-- Use for example:
+--
+-- > mainloop $ Movies.fromList ["Am Limit", "Matrix", "Matrix"]
+mainloop :: Movies  -- ^ The initial movies
+         -> IO ()
 mainloop vl = do
     menu
     c <- getChar
     putStr "\n"
     vl' <- case c of
-       'g' -> do fmap snd $ rentVideo vl
-       'r' -> do returnVideo vl
+       'g' -> do fmap snd $ rentMovie vl
+       'r' -> do returnMovie vl
        'l' -> do putStr "Filename? "
                  filename <- getLine
                  readMovies filename
