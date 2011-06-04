@@ -26,7 +26,7 @@ module Movies ( fromList
 
 import Prelude hiding (return)
 import qualified Data.Map as M
-import Control.Arrow ( first, second, (***) )
+import Control.Arrow ( second, (***) )
 
 -- | A 'Title' is just a 'String'
 type Title = String
@@ -130,10 +130,10 @@ showMovieStore movies =
     M.foldrWithKey (\k v str ->  (str++) $ (++"\n") $ showMovie k v)
                   "Videotheken-Bestand\n\n" movies
      ++ "\n"
-     ++ (if rent > notrent
+     ++ (if rent' > notrent
         then "Sehr gut! Es sind mehr als die Haelfte der Videos verliehen!\n"
         else "Schlecht! Es sind zuwenig Videos verliehen!\n")
-     ++ "Verliehen: " ++ show rent
+     ++ "Verliehen: " ++ show rent'
      ++ ", nicht verliehen: " ++ show notrent ++ "\n\n"
-    where (available,rent) = state movies
-          notrent = available - rent
+    where (available,rent') = state movies
+          notrent = available - rent'
