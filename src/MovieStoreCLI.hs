@@ -18,7 +18,7 @@ module Main ( main
             , rentMovie
             , returnMovie
             , mainloop
-            )where
+            ) where
 
 import qualified Movies as M
 import System.IO(hSetBuffering, stdin, stdout, BufferMode(NoBuffering))
