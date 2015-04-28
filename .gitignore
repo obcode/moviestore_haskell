@@ -1,1 +1,5 @@
 dist/
+.cabal-sandbox
+.hpc
+cabal.sandbox.config
+moviestore-tests.tix
