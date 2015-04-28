@@ -1,4 +1,4 @@
-Tbal his is a simple MovieStore example written in Haskell which I am using for my
+This is a simple MovieStore example written in Haskell which I am using for my
 advanced functional programming lecture.
 
 It contains an executable "moviestore" which can be build and installed via
